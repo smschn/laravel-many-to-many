@@ -28,7 +28,7 @@
                         laravel, in automatico, parte dall'id della foreign key,
                         va alla tabella <categories> alla relativa riga e restituisce il valore richiesto (->name).
                     --}}
-                    <td>{{($post->category)?$post->category->name:'No category'}}</td>
+                    <td>{{($post->category)?$post->category->name:'-'}}</td>
                     {{--
                         se il post ha dei tag (verifico grazie a count()), li ciclo e stampo il loro nome; altrimenti stampo <no tag>.
                         accedo ai <tags> (funzione) del model <post> come se fosse un suo attributo\proprietà:
@@ -41,7 +41,7 @@
                                 {{$tag->name}}
                             @endforeach
                         @else
-                            <span>No tag</span>
+                            <span>-</span>
                         @endif
                     </td>
                     <td class="d-flex">
