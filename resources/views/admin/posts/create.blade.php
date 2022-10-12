@@ -69,6 +69,9 @@
             <button type="submit" class="btn btn-primary mt-3">Create post</button>
 
         </form>
+
+        <a href="{{route('admin.posts.index')}}" class="btn btn-primary mt-3">Back to index</a>
+
     </div>
 
 @endsection
