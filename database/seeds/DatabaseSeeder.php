@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
 
         // inserisco la lista dei seeder da eseguire con un unico comando da terminale <php artisan db:seed>.
         $this->call(CategorySeeder::class);
+        $this->call(TagSeeder::class);
     }
 }
