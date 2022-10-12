@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Post; // importo il model <post> per poterlo usare in questo file.
 use App\Category; // importo il model <category> per poterlo usare in questo file.
+use App\Tag; // importo il model <tag> per poter usare i metodi statici in questo file.
 use Illuminate\Support\Str; // importo questa classe per poterla usare nella creazione dello <slug>.
 
 class PostController extends Controller
@@ -30,9 +31,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        // recupero le categorie (importando il model) e le passo alla view <create>.
-        $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $categories = Category::all(); // recupero tutte le categorie (ricorda: importa il model) e le passo alla view <create>.
+        $tags = Tag::all(); // recupero tutti i tag (ricorda: importa il model) e li passo alla view <create>.
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**

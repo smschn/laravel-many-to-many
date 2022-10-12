@@ -41,7 +41,32 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Create post</button>
+            <div class="card p-3">
+                {{-- ciclo i tag, creando una checkbox ciascuno --}}
+                @foreach ($tags as $tag)
+                    <div class="form-group form-check">
+                        {{-- 
+                            <id> e <for> uguali affinché, cliccando sulla label, venga portato il focus sul relativo input + univoci per ciascun tag (grazie all'id del tag).
+                            <value> univoco.
+                            <name> invia al backend (alla store()) un array contenente i <value> dei checkbox selezionati, ma NON invia l'array se non viene selezionato alcun checkbox.
+                            per preselezionare le checkbox al ricaricamento della view create a seguito di validazione fallita, si deve usare l'attributo html <checked> e la funzione php <in_array()>:
+                            <in_array()> cerca un valore dentro un array ed accetta due parametri: il secondo è l'array in cui cercare, il primo è il valore da cercare in dato array:
+                            come secondo parametro inserisco la funzione old() che recupera l'array precedentemente creato dall'attributo <name>, come primo parametro l'id del tag ciclato:
+                            qualora non fosse stato selezionato alcun checkbox, l'array NON esisterebbe e quindi non avrei un secondo parametro dentro <in_array()>:
+                            essendo il secondo parametro di <in_array()> obbligatorio, deve sempre esserci un array in cui cercare per cui come secondo parametro della old() inserisco un array vuoto:
+                            in questo modo se non ci fosse un array <tags>, la old() restituisce come valore di default un array vuoto: in tal modo ho sempre un array come secondo parametro della <in_array()>.
+                        --}}
+                        <input class="form-check-input" type="checkbox" id="tag_{{$tag->id}}" value="{{$tag->id}}" name="tags[]" {{(in_array($tag->id, old('tags', [])))?'checked':''}}>
+                        <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>
+                    </div>
+                @endforeach
+
+                @error('tags')
+                    <div class="alert alert-danger mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Create post</button>
 
         </form>
     </div>
