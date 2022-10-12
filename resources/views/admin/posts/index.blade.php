@@ -38,7 +38,7 @@
                     <td>
                         @if (count($post->tags))
                             @foreach ($post->tags as $tag)
-                                {{$tag->name}}
+                                <span class="btn btn-secondary disabled">{{$tag->name}}</span>
                             @endforeach
                         @else
                             <span>-</span>

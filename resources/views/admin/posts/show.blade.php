@@ -24,7 +24,7 @@
         <h3 class="fw-bold">Tags:</h3>
         <p>
             @foreach ($post->tags as $tag)
-                {{$tag->name}}
+                <span class="btn btn-secondary disabled">{{$tag->name}}</span>
             @endforeach
         </p>
 
