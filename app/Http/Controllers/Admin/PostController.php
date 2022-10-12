@@ -69,7 +69,7 @@ class PostController extends Controller
         // con ->sync() aggiungo alla tabella pivot i tag associati al post tramite (sync accetta come parametro un array di id).
         // così facendo si crea la relazione dentro la tabella pivot.
         if (array_key_exists('tags', $data)) {
-            $newPost->tags()->sync($data['tags']);
+            $newPost->tags()->sync($data['tags']); // qui la sintassi prevede l'uso di ->tags() come metodo e non come attributo di <post>.
         }
         return redirect()->route('admin.posts.index')->with('status', 'Post created!'); // aggiunto messaggio di avvenuta creazione.
     }

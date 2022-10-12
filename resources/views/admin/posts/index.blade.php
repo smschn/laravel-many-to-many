@@ -13,6 +13,7 @@
                   <th scope="col">Title</th>
                   <th scope="col">Slug</th>
                   <th scope="col">Category</th>
+                  <th scope="col">Tags</th>
                   <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -23,11 +24,26 @@
                     <td>{{$post->title}}</td>
                     <td>{{$post->slug}}</td>
                     {{--
-                        accedo alla funzione <category> del model <post> come se fosse un attributo\proprietà:
+                        accedo alla <category> (funzione) del model <post> come se fosse un suo attributo\proprietà:
                         laravel, in automatico, parte dall'id della foreign key,
                         va alla tabella <categories> alla relativa riga e restituisce il valore richiesto (->name).
                     --}}
                     <td>{{($post->category)?$post->category->name:'No category'}}</td>
+                    {{--
+                        se il post ha dei tag (verifico grazie a count()), li ciclo e stampo il loro nome; altrimenti stampo <no tag>.
+                        accedo ai <tags> (funzione) del model <post> come se fosse un suo attributo\proprietà:
+                        trattandosi di una relazione many to many, tags è una collection\array:
+                        va ciclata per stampare un tag alla volta (anche se c'è solo un tag).
+                    --}}
+                    <td>
+                        @if (count($post->tags))
+                            @foreach ($post->tags as $tag)
+                                {{$tag->name}}
+                            @endforeach
+                        @else
+                            <span>No tag</span>
+                        @endif
+                    </td>
                     <td class="d-flex">
                         <a href="{{route('admin.posts.show', ['post' => $post->id])}}" class="btn btn-primary mx-1">View</a>
                         <a href="{{route('admin.posts.edit', ['post' => $post->id])}}" class="btn btn-warning mx-1">Edit</a>
