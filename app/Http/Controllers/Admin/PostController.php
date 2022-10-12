@@ -48,7 +48,10 @@ class PostController extends Controller
             [
                 'title' => 'required|max:255|min:5',
                 'content' => 'required|max:65535|min:5',
-                'category_id' => 'nullable|exists:categories,id' // aggiungo validazione della nuova colonna (foreign key): può non essere selezionata (nullable); <exists>: deve esistere la tabella <categories> con la colonna <id>.
+                'category_id' => 'nullable|exists:categories,id', // aggiungo validazione della nuova colonna (foreign key): può non essere selezionata (nullable); <exists>: deve esistere la tabella <categories> con la colonna <id>.
+                // aggiungo validazione dell'array tags[] (se esistente) proveniente dalla checkbox della view create:
+                // ogni <id> contenuto nell'array deve esistere nella tabella <tags>, alla colonna <id>.
+                'tags' => 'exists:tags,id' 
             ]
         );
         $data = $request->all();
@@ -57,6 +60,14 @@ class PostController extends Controller
         $newSlug = $this->createSlug($newPost->title); // ricorda: usare $this-> dentro le classi; creo un nuovo slug richiamando la funzione.
         $newPost->slug = $newSlug; // assegno il nuovo slug al nuovo post.
         $newPost->save();
+        // gestire il caso in cui NON venga selezionata alcuna checkbox (non esisterebbe la chiave <tags> nell'array $data):
+        // uso un <if> + <array_key_exists> per verificare che nell'array $data ci sia la chiave <tags>: se c'è, eseguo il codice interno:
+        // con ->tags() indico l'altra tabella con cui sussiste la relazione many to many (richiamando la funzione tags() interna al model <post>).
+        // con ->sync() aggiungo alla tabella pivot i tag associati al post tramite (sync accetta come parametro un array di id).
+        // così facendo si crea la relazione many to many dentro la tabella pivot.
+        if (array_key_exists('tags', $data)) {
+            $newPost->tags()->sync($data['tags']);
+        }
         return redirect()->route('admin.posts.index')->with('status', 'Post created!'); // aggiunto messaggio di avvenuta creazione.
     }
 
