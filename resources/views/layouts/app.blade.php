@@ -33,9 +33,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+                    <ul class="navbar-nav mr-2">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('admin.posts.index') }}">Gestione Post</a> <!-- in automatico il link è visibile solo quando viene fatto l'accesso -->
+                            <a class="nav-link" href="{{ route('admin.posts.index') }}">Post Management</a>
+                        </li>
+                    </ul>
+
+                    <!-- Left Side Of Navbar -->
+                    <ul class="navbar-nav mr-2">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('admin.tags.index') }}">Tag Management</a>
                         </li>
                     </ul>
 
