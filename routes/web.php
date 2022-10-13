@@ -26,7 +26,8 @@ Route::middleware('auth') // controlla se il visitatore ha l'autorizzazione per 
     ->prefix('admin') // aggiunge alle rotte presenti in ->group() </admin> alla parte iniziale dell'URI\url (es. la home '/' diventa '/admin').
     ->group(function() { // qui inserisco tutte le route che soddisfano le condizioni precedenti.
         Route::get('/', 'HomeController@Index')->name('home');  // questa route lega l'url <localhost:8000/admin> alla view <\views\admin\home.blade.php> e si chiama <admin.home> (in automatico viene aggiunto il prefisso 'admin').
-        Route::resource('posts', 'PostController'); // route specifica per gestire in automatico le operazioni CRUD sui post: si trova tra quelle amministrative perché solo chi è loggato può gestire i post.
+        Route::resource('posts', 'PostController'); // route che gestisce in automatico le operazioni CRUD sui post: si trova tra quelle amministrative perché solo chi è loggato può gestire i post.
+        Route::resource('tags', 'TagController'); // route che gestisce in automatico le operazioni CRUD sui tag.
     });
 
 // la seguente route va inserita per ultima in questo file.
