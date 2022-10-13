@@ -21,7 +21,7 @@ Auth::routes();
 // devono, per essere considerate routes amministrative, soddisfare tutti i campi sottostanti.
 // esempio: se non ho l'autorizzazione, si passa oltre andando a recuperare altre routes (che quindi non saranno amministrative).
 Route::middleware('auth') // controlla se il visitatore ha l'autorizzazione per proseguire, accedendo a queste routes (l'autorizzazione c'è dopo aver eseguito il login, viceversa non c'è).
-    ->namespace('Admin') // i controller delle route in ->group() devono trovarsi nella cartella 'Admin' dei controller: \app\http\controllers\admin\.
+    ->namespace('Admin') // cerca i controller delle route in ->group() devono trovarsi nella cartella 'Admin' dei controller: \app\http\controllers\admin\.
     ->name('admin.') // aggiunge alle rotte presenti in group->() <admin.> prima del loro nome.
     ->prefix('admin') // aggiunge alle rotte presenti in ->group() </admin> alla parte iniziale dell'URI\url (es. la home '/' diventa '/admin').
     ->group(function() { // qui inserisco tutte le route che soddisfano le condizioni precedenti.

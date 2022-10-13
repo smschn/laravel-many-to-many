@@ -43,11 +43,45 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-primary">Edit post</button>
+            <div class="card p-3">
+                {{-- ciclo i tag, creando una checkbox ciascuno --}}
+                @foreach ($tags as $tag)
+                    <div class="form-group form-check">
+                        {{-- 
+                            se c'è un errore di validazione, entro nell'if:
+                            quando la view edit viene ricaricata post validazione fallita,
+                            i valori precedentemente selezionati vengono preselezionati,
+                            mentre quelli NON selezionati NON vengono preselezionati:
+                            il tutto funziona grazie a <in_array()> + old() con doppio parametro.
+                        --}}
+                        @if ($errors->any())
+                            <input class="form-check-input" type="checkbox" id="tag_{{$tag->id}}" value="{{$tag->id}}" name="tags[]" {{(in_array($tag->id, old('tags', [])))?'checked':''}}>
+                            <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>              
+                        {{-- 
+                            altrimenti, al primo caricamento della view edit,
+                            preseleziono le checkbox in base ai valori presenti nel database:
+                            il tutto funziona grazie a contains():
+                            controllo se nei tag del post che sto editando ($post->tags: accedo alla relazione many to many come se fosse un attributo)
+                            è contenuto il tag ciclato (->contains($tag)).
+                            ->tags è una collection (simil array).
+                        --}}
+                        @else
+                            <input class="form-check-input" type="checkbox" id="tag_{{$tag->id}}" value="{{$tag->id}}" name="tags[]" {{($post->tags->contains($tag))?'checked':''}}>
+                            <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>
+                        @endif
+                    </div>
+                @endforeach
+
+                @error('tags')
+                    <div class="alert alert-danger mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Edit post</button>
 
         </form>
 
-        <a href="{{route('admin.posts.index')}}" class="btn btn-primary mt-4">Back to index</a>
+        <a href="{{route('admin.posts.index')}}" class="btn btn-primary mt-3">Back to index</a>
 
     </div>
 
