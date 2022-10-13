@@ -50,8 +50,8 @@
                         {{-- 
                             se c'è un errore di validazione, entro nell'if:
                             quando la view edit viene ricaricata post validazione fallita,
-                            i valori precedentemente selezionati vengono preselezionati,
-                            mentre quelli NON selezionati NON vengono preselezionati:
+                            le checkbox dei tag precedentemente selezionate vengono pre-selezionate,
+                            mentre quelle NON selezionate NON vengono pre-selezionate (ripristino lo status quo al momento dell'invio dell'edit):
                             il tutto funziona grazie a <in_array()> + old() con doppio parametro.
                         --}}
                         @if ($errors->any())
@@ -59,10 +59,10 @@
                             <label class="form-check-label" for="tag_{{$tag->id}}">{{$tag->name}}</label>              
                         {{-- 
                             altrimenti, al primo caricamento della view edit,
-                            preseleziono le checkbox in base ai valori presenti nel database:
+                            pre-seleziono le checkbox dei tag già assegnati al post (ho già una relazione nel database):
                             il tutto funziona grazie a contains():
-                            controllo se nei tag del post che sto editando ($post->tags: accedo alla relazione many to many come se fosse un attributo)
-                            è contenuto il tag ciclato (->contains($tag)).
+                            controllo se nei tag del post che sto editando (usando: $post->tags: accedo alla relazione many to many come se fosse un attributo)
+                            è contenuto il tag ciclato (->contains($tag)): se è contenuto, la checkbox viene selezionata, altrimenti no.
                             ->tags è una collection (simil array).
                         --}}
                         @else

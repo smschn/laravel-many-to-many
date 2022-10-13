@@ -111,7 +111,8 @@ class PostController extends Controller
             [
                 'title' => 'required|max:255|min:5',
                 'content' => 'required|max:65535|min:5',
-                'category_id' => 'nullable|exists:categories,id' // aggiungo validazione della nuova colonna (foreign key).
+                'category_id' => 'nullable|exists:categories,id', // aggiungo validazione della nuova colonna (foreign key).
+                'tags' => 'exists:tags,id' // aggiungo validazione tags.
             ]
         );
         $data = $request->all();
@@ -120,8 +121,33 @@ class PostController extends Controller
         if ($post->title !== $data['title']) {
             $data['slug'] = $this->createSlug($data['title']); // assegno il nuovo slug creato a $data, aggiungedone all'array associativo la chiave 'slug' con il relativo valore appena creato.
         }
-        $post->update($data); // usando l'update() non c'è bisogno di usare anche il metodo ->save() perché viene fatto in automatico.
-        return redirect()->route('admin.posts.index')->with('status', 'Post updated!'); // aggiunto messaggio di avvenuta modifica.
+
+        // aggiorno i dati del post.
+        // con l'update() non c'è bisogno di usare il metodo ->save(): viene fatto in automatico.
+        $post->update($data);
+
+        /*
+            (ricorda: <tags> è un array contenente l'id delle checkbox).
+            aggiorno le relazioni tra il post e i tag (nella tabella pivot), attraverso un if.
+            se nell'array associativo <$data> esiste una chiave (key) <tags>, singnifica che ho selezionato delle checkbox
+            (ricorda: l'array <tags> viene inviato solo se viene selezionata almeno una checkbox)
+            e allora faccio la ->sync() dell'array <tags> (contenuto in <$data>) nella tabella pivot tra post e tags (uso: $post->tags).
+            (la ->sync() aggiunge e toglie in automatico le relazioni dalla tabella pivot + la ->sync() accetta solo array come parametro).
+            altrimenti (else), se non ho la chiave <tags> dentro l'array associativo <$data>, significa che non ho selezionato alcuna checkbox,
+            (ricorda: l'array <tags> non è stato inviato al backend perché non è stata selezionata alcuna checkbox)
+            e allora faccio la ->sync() di un array vuoto: cioè tolgo tutte le relazioni tra il post e i tag.
+        */ 
+        if (array_key_exists('tags', $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->sync([]);
+        }
+
+        // return di un redirect perché update accetta dati in POST:
+        // di default non ritorna nulla al browser:
+        // con la ->redirect indico di caricare la rotta con il nome specificato
+        // con ->with() aggiungo un messaggio che avvisa della corretta modifica (serve anche un @if(status()) nel layout base).
+        return redirect()->route('admin.posts.index')->with('status', 'Post updated!');
     }
 
     /**
