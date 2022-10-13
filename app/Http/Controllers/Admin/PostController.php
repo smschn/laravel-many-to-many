@@ -158,6 +158,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post) // utilizzo la dependency injection.
     {
+        $post->tags()->sync([]); // prima di eliminare il post, cancello tutte le sue relazioni con i tag.
         $post->delete();
         return redirect()->route('admin.posts.index')->with('status', 'Post deleted!'); // aggiunto messaggio di avvenuta cancellazione.
     }
