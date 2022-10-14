@@ -24,7 +24,7 @@ Route::middleware('auth') // controlla se il visitatore ha l'autorizzazione per 
     ->namespace('Admin') // cerca i controller delle route in ->group() devono trovarsi nella cartella 'Admin' dei controller: \app\http\controllers\admin\.
     ->name('admin.') // aggiunge alle rotte presenti in group->() <admin.> prima del loro nome.
     ->prefix('admin') // aggiunge alle rotte presenti in ->group() </admin> alla parte iniziale dell'URI\url (es. la home '/' diventa '/admin').
-    ->group(function() { // qui inserisco tutte le route che soddisfano le condizioni precedenti.
+    ->group(function() { // qui inserisco tutte le route che voglio proteggere con il middleware.
         Route::get('/', 'HomeController@Index')->name('home');  // questa route lega l'url <localhost:8000/admin> alla view <\views\admin\home.blade.php> e si chiama <admin.home> (in automatico viene aggiunto il prefisso 'admin').
         Route::resource('posts', 'PostController'); // route che gestisce in automatico le operazioni CRUD sui post: si trova tra quelle amministrative perché solo chi è loggato può gestire i post.
         Route::resource('tags', 'TagController'); // route che gestisce in automatico le operazioni CRUD sui tag.

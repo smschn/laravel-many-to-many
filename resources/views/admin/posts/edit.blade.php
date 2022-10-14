@@ -36,7 +36,7 @@
 
             <div class="form-group mb-3">
                 <label for="contentC">Content:</label>
-                <textarea class="form-control @error('title') is-invalid @enderror" id="contentC" name="content" required>{{old('content', $post->content)}}</textarea>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="contentC" name="content" required>{{old('content', $post->content)}}</textarea>
 
                 @error('content')
                     <div class="alert alert-danger mt-1">{{ $message }}</div>

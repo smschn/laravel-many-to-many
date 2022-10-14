@@ -5,7 +5,7 @@
     <div class="container">
         <form action="{{route('admin.posts.store')}}" method="POST">
 
-            @csrf
+            @csrf {{-- aggiunge un token all'invio del form --}}
 
             <div class="form-group mb-3">
                 <label for="categoryId">Category:</label>
@@ -34,7 +34,7 @@
 
             <div class="form-group mb-3">
                 <label for="contentC">Content:</label>
-                <textarea class="form-control @error('content') is-invalid @enderror" id="contentC" name="content" required>{{old('title')}}</textarea>
+                <textarea class="form-control @error('content') is-invalid @enderror" id="contentC" name="content" required>{{old('content')}}</textarea>
                 
                 @error('content')
                     <div class="alert alert-danger mt-1">{{ $message }}</div>
